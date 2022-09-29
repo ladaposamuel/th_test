@@ -25,6 +25,7 @@
                             <th>Grade</th>
                             <th>Drying Method</th>
                             <th>Treatment</th>
+                            <th>Dimensions</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -35,6 +36,8 @@
                             <th>Grade</th>
                             <th>Drying Method</th>
                             <th>Treatment</th>
+                            <th>Dimensions</th>
+
                         </tr>
                         </tfoot>
                         <tbody>
@@ -47,6 +50,7 @@
                             <td>{{ $pd->grade->getGradeName() }}/{{ $pd->grade->getGradeNameOption() }}</td>
                             <td>{{ $pd->dryMethod->method_name }}</td>
                             <td>{{ $pd->treatement->treatment_name ?? '' }}</td>
+                            <td>{{ $pd->product_thickness }}x{{ $pd->product_width }}x{{ $pd->product_length }}</td>
                         </tr>
                             @endforeach
                         </tbody>
