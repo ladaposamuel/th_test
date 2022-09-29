@@ -14,5 +14,9 @@ class SpecSpecie extends Model
         'specie_name'
     ];
 
+    public function specie()
+    {
+        return $this->hasMany(ProductSpecification::class);
+    }
 
 }
