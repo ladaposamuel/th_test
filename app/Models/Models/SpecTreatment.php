@@ -14,4 +14,10 @@ class SpecTreatment extends Model
     ];
 
 
+    public function treatement()
+    {
+        return $this->hasMany(ProductSpecification::class);
+    }
+
+
 }

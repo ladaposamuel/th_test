@@ -13,4 +13,10 @@ class SpecDryMethod extends Model
         'method_name'
     ];
 
+    public function dryMethod()
+    {
+        return $this->hasMany(ProductSpecification::class);
+    }
+
+
 }

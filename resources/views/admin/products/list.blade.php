@@ -38,14 +38,17 @@
                         </tr>
                         </tfoot>
                         <tbody>
+                        @php $i = 1 @endphp
+                        @foreach($data['products'] as $pd)
                         <tr>
-                            <td>1</td>
-                            <td><a href="#." class="text-primary">#00001</a></td>
-                            <td>Spruce</td>
-                            <td>Nordic Blue/A1</td>
-                            <td>Fresh</td>
-                            <td>Heat Treated</td>
+                            <td>{{ $i++ }}</td>
+                            <td><a href="#." class="text-primary">{{ $pd->product->product_code }}</a></td>
+                            <td>{{ $pd->specie->specie_name }}</td>
+                            <td>{{ $pd->grade->getGradeName() }}/{{ $pd->grade->getGradeNameOption() }}</td>
+                            <td>{{ $pd->dryMethod->method_name }}</td>
+                            <td>{{ $pd->treatement->treatment_name ?? '' }}</td>
                         </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     </div>
