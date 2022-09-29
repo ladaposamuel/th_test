@@ -6,7 +6,7 @@
 
 1.  [About the Project](#about-the-project)
 2. [Getting Started](#getting-started)
-3. [Authur](#Authur)
+3. [Author](#Author)
 
 ## About the project
 
