@@ -1,5 +1,6 @@
 # Product Listing Tool
 
+<img width="1468" alt="Screenshot 2022-09-29 at 6 44 40 PM" src="https://user-images.githubusercontent.com/9302799/193106256-f117c837-ba25-4649-b234-760518f541be.png">
 
 ### Table of Contents
 
