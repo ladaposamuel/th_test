@@ -8,6 +8,7 @@ use App\Models\Models\GradeNameOptions;
 use App\Models\Models\Product;
 use App\Models\Models\ProductSpecification;
 use App\Models\Models\SpecDryMethod;
+use App\Models\Models\SpecGrade;
 use App\Models\Models\SpecSpecie;
 use App\Models\Models\SpecTreatment;
 use Illuminate\Http\Request;
@@ -19,10 +20,10 @@ class ProductsController extends Controller
         $data = [];
         $products = [];
         $getProducts = Product::all();
-        foreach($getProducts as $prd){
+        foreach ($getProducts as $prd) {
             $products[$prd->id] = $prd
                 ->specifications()
-                ->with(['product','specie','dryMethod','treatement','grade'])
+                ->with(['product', 'specie', 'dryMethod', 'treatement', 'grade'])
                 ->first();
         }
         $data['products'] = $products;
@@ -42,7 +43,8 @@ class ProductsController extends Controller
         return view('admin.products.add')->withData($data);
     }
 
-    public function save(Request $request) {
+    public function save(Request $request)
+    {
         $specie = $request->input('specie');
         $grade_name = $request->input('grade_name');
         $grade_name_option = $request->input('grade_name_option');
@@ -62,24 +64,50 @@ class ProductsController extends Controller
             'length' => 'required|numeric'
         ]);
 
-        //product specifications
 
+        //save grades
+        if ($this->validateGrades($grade_name,$grade_name_option) === 0) {
+            session()->flash('error', 'It seems you selected a wrong option for the Grade');
+            return back();
+        }
+
+
+        //product specifications
         $productSpecifications = new ProductSpecification();
-        $productSpecifications->product_thickness =  $thickness;
-        $productSpecifications->product_width =  $width;
-        $productSpecifications->product_length =  $length;
-        $productSpecifications->spec_specie_id =  $specie;
-        $productSpecifications->spec_grade_id =  $grade_name;
-        $productSpecifications->spec_treatment_id =  $treatment;
-        $productSpecifications->spec_dry_method_id =  $drying_method;
+        $productSpecifications->product_thickness = $thickness;
+        $productSpecifications->product_width = $width;
+        $productSpecifications->product_length = $length;
+        $productSpecifications->spec_specie_id = $specie;
+        $productSpecifications->spec_grade_id = $grade_name;
+        $productSpecifications->spec_treatment_id = $treatment;
+        $productSpecifications->spec_dry_method_id = $drying_method;
 
 
         $product = new Product();
-        $product->product_code = '00000';
+        $product->product_code = rand(00000,99999);
         $product->save();
-        $product->specifications()->save($productSpecifications);
+        $productId = $product->id;
+        $specId = $product->specifications()->save($productSpecifications);
+        Product::find($productId)->update([
+            'product_specification_id' => $specId->id
+        ]);
 
-        dd($product);
+        $storeGrade = new SpecGrade();
+        $storeGrade->grade_name_id = $grade_name;
+        $storeGrade->grade_name_options_id = $grade_name_option;
+        $storeGrade->product_specification_id = $specId->id;
+        $storeGrade->save();
+
+
+        session()->flash('success', 'New product added');
+        return back();
+    }
+
+
+    //This will check if user has selected the correct grade option
+    private function validateGrades($gradeName, $gradeNameoption)
+    {
+        return GradeNameOptions::where('grade_name_id', $gradeName)->where('id', $gradeNameoption)->count();
 
     }
 }
