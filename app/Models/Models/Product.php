@@ -18,7 +18,7 @@ class Product extends Model
 
     public function specifications()
     {
-        return $this->hasOne(ProductSpecification::class);
+        return $this->hasOne(ProductSpecification::class,'product_id');
     }
 /*
     public function getall()
