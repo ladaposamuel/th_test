@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('product_code')->unique()->comment('THA_000001');
 
-            $table->foreignIdFor(ProductSpecification::class);
+            $table->foreignIdFor(ProductSpecification::class)->nullable();
             $table->timestamps();
         });
     }
